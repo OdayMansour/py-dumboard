@@ -11,26 +11,12 @@ python -m pip install Flask
 
 Conductor works now, registers (join) name/type pairs and unregisters them (leave).
 
-To test, run the app:
-```
-python conductor.py
-```
+To test, run the app: `python conductor.py`
 
-Go to the info page: `http://127.0.0.1:1201/info/`
+Go to the Conductor info page: `http://127.0.0.1:1201/info/`
 
-Register a few Members:
-```
-curl --data "name=secondone&type=fetcher" http://localhost:1201/join/
-curl --data "name=firstone&type=fetcher" http://localhost:1201/join/
-```
+Start a Member and it will register itself: `python member.py`
 
-Refresh the info page and see the difference.
+Refresh the Conductor info page and see the difference.
 
-Unregister a Member:
-```
-curl --data "name=secondone&type=fetcher" http://localhost:1201/leave/
-```
-
-Refresh the info page and see the difference.
-
-Try registering the same name/type more than once, or deregistering it twice.
+Ctrl+C on the Member, refresh the Conductor info page and see the difference.
