@@ -1,26 +1,13 @@
 import dumboard_config as cfg
 import simplejson as json
+import orchestra as orch
 from flask import Flask
 from flask import request
 
+
 app = Flask(__name__)
-
-
-# Setting up orchestra
-class Orchestra:
-    members = []
-
-
-class Member:
-    name = ""
-    type = ""
-
-
-orchestra = Orchestra()
-
-# Starting up server
-if __name__ == '__main__':
-    app.run(host="localhost", port=cfg.conductor["port"], debug=True)
+orchestra = orch.Orchestra("dumboard")
+conductor = orch.Conductor(cfg.conductor["port"])
 
 
 @app.route('/')
@@ -30,10 +17,13 @@ def welcome():
 
 @app.route('/info/')
 def info():
-  global orchestra
-  return f"""<pre>
-Conductor running on port {cfg.conductor["port"]} <br />
-{json.dumps(orchestra.members, sort_keys=True, indent=4 * ' ')}
+    global orchestra
+    json_members = ""
+    for member in orchestra.members:
+        json_members = json_members + str(member.toDict()) + "\n"
+    return f"""<pre>
+Conductor running on port {conductor.port}
+{json_members}
 </pre>
 """
 
@@ -41,30 +31,23 @@ Conductor running on port {cfg.conductor["port"]} <br />
 @app.route('/join/', methods=['POST'])
 def join():
     global orchestra
-
-    member = {
-        "name": request.form["name"],
-        "type": request.form["type"]
-        }
-
-    if member not in orchestra.members:
-        orchestra.members.append(member)
+    member = orch.Member(request.form["name"], request.form["section"], int(request.form["port"]), conductor)
+    if orchestra.addMember(member):
         return "OK"
     else:
-        return "NOK - Already registered"
-
-    orchestra.members.append()
-    return "OK"
+        return "NOK"
 
 
 @app.route('/leave/', methods=['POST'])
 def leave():
-    member = {
-        "name": request.form["name"],
-        "type": request.form["type"]
-        }
-    if member in orchestra.members:
-        orchestra.members.remove(member)
+    global orchestra
+    member = orch.Member(request.form["name"], request.form["section"], int(request.form["port"]), conductor)
+    if orchestra.removeMember(member):
         return "OK"
     else:
-        return "NOK - Not registered"
+        return "NOK"
+
+
+# Starting up server
+if __name__ == '__main__':
+    app.run(host="localhost", port=conductor.port, debug=True)
