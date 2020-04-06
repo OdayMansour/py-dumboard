@@ -1,3 +1,5 @@
+import threading, time
+
 class Orchestra:
     name = ""
     members = []
@@ -22,13 +24,11 @@ class Orchestra:
             return False
 
 
-
 class Conductor:
     port = -1
 
     def __init__(self, port = -1):
         self.port = port
-
 
 
 class Member:
@@ -54,3 +54,28 @@ class Member:
             "section": self.section,
             "port": self.port
         }
+
+
+class BackgroundScheduler:
+    def __init__(self, interval, callback):
+        self.interval = interval
+        self.callback = callback
+
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True
+        thread.start()
+
+    def run(self):
+        while True:
+            self.callback()
+            time.sleep(self.interval)
+
+
+class FetchedDocument:
+    document = ""
+    timestamp = -1
+    def __init__(self, document, member):
+        self.document = document
+        self.member = member
+        self.timestamp = time.time()
+
