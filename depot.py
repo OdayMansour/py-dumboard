@@ -16,12 +16,12 @@ def find_free_port():
 
 
 def join_orchestra(conductor, member):
-    url = 'http://localhost:' + conductor.port + '/join/'
+    url = 'http://localhost:' + str(conductor.port) + '/join/'
     reqs.post(url, data = member.toDict())
 
 
 def leave_orchestra(conductor, member):
-    url = 'http://localhost:' + conductor.port + '/leave/'
+    url = 'http://localhost:' + str(conductor.port) + '/leave/'
     reqs.post(url, data = member.toDict())
 
 
@@ -40,6 +40,7 @@ member = orch.Member("Depot","depot", find_free_port(), conductor)
 
 join_orchestra(conductor, member)
 
+
 # Setting up server
 app = Flask(__name__)
 
@@ -47,7 +48,7 @@ app = Flask(__name__)
 def welcome():
     global member
     return f"""<pre>
-Member running on port {conductor.port}
+Member running on port {str(conductor.port)}
 {str(member.toDict())}
 </pre>
 """
@@ -56,7 +57,7 @@ Member running on port {conductor.port}
 @app.route('/store/', methods=['POST'])
 def join():
     print("Received payload:")
-    print(request.form)
+    print(request.json)
     return "OK"
 
 

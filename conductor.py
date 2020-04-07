@@ -21,7 +21,7 @@ def info():
     for member in orchestra.members:
         members = members + member.toString() + "\n"
     return f"""<pre>
-Conductor running on port {conductor.port}
+Conductor running on port {str(conductor.port)}
 {members}
 </pre>
 """
@@ -34,6 +34,19 @@ def members():
     for member in orchestra.members:
         members.append(member.toDict())
     return jsonify(members)
+
+
+@app.route('/members/depot/')
+def depot():
+    global orchestra
+    if orchestra.depot is not None:
+        return jsonify(orchestra.depot.toDict())
+    else:
+        depot = orch.Member("", "", 0, orch.Conductor())
+        for member in orchestra.members:
+            if member.section == "depot":
+                orchestra.setDepot(member)
+        return jsonify(orchestra.depot.toDict())
 
 
 @app.route('/join/', methods=['POST'])
@@ -58,4 +71,4 @@ def leave():
 
 # Starting up server
 if __name__ == '__main__':
-    app.run(host="localhost", port=conductor.port, debug=True)
+    app.run(host="localhost", port=conductor.port, debug=False)

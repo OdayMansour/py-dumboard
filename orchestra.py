@@ -3,6 +3,7 @@ import threading, time
 class Orchestra:
     name = ""
     members = []
+    depot = None
 
     def __init__(self, name):
         self.name = name
@@ -18,9 +19,19 @@ class Orchestra:
     def removeMember(self, member):
         if member in self.members:
             self.members.remove(member)
+            if member.section == "depot":
+                self.depot = None
             return True
         else:
             print(f"Member {member.name}-{member.section} does not exist")
+            return False
+
+    def setDepot(self, member):
+        if member in self.members:
+            self.depot = member
+            return True
+        else:
+            print(f"Depot {member.name}-{member.section} does not exist as a member")
             return False
 
 
@@ -82,3 +93,12 @@ class FetchedDocument:
         self.member = member
         self.timestamp = time.time()
 
+    def toDict(self):
+        return {
+            "timestamp": self.timestamp,
+            "member": {
+                "name": self.member.name,
+                "section": self.member.section
+            },
+            "document": self.document
+        }

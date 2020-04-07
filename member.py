@@ -16,12 +16,12 @@ def find_free_port():
 
 
 def join_orchestra(conductor, member):
-    url = 'http://localhost:' + conductor.port + '/join/'
+    url = 'http://localhost:' + str(conductor.port) + '/join/'
     reqs.post(url, data = member.toDict())
 
 
 def leave_orchestra(conductor, member):
-    url = 'http://localhost:' + conductor.port + '/leave/'
+    url = 'http://localhost:' + str(conductor.port) + '/leave/'
     reqs.post(url, data = member.toDict())
 
 
@@ -47,7 +47,7 @@ app = Flask(__name__)
 def welcome():
     global member
     return f"""<pre>
-Member running on port {conductor.port}
+Member running on port {str(conductor.port)}
 {str(member.toDict())}
 </pre>
 """

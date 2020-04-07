@@ -1,13 +1,8 @@
 # Global configuration file for the dumboard
 
-# Orchestra
-orchestra = {
-    "depot": "Depot"
-}
-
 # Conductor
 conductor = {
-    "port": "1201"
+    "port": 1201
 }
 
 # Fetchers
