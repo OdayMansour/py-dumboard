@@ -9,14 +9,41 @@ python -m pip install Flask
 
 # Status
 
-Conductor works now, registers (join) name/type pairs and unregisters them (leave).
+## Conductor
 
-To test, run the app: `python conductor.py`
+Unique service, keeps track of all members. Also keep track of the depot to let other members know.
 
-Go to the Conductor info page: `http://127.0.0.1:1201/info/`
+It registers (join) members and unregisters them (leave).
 
-Start a Member and it will register itself: `python member.py`
+## Member
 
-Refresh the Conductor info page and see the difference.
+Finds Conductor and registers presence. Unregisters when closing.
 
-Ctrl+C on the Member, refresh the Conductor info page and see the difference.
+Fetchers are Members that are meant to fetch data from the outside and then send them to the store. The stored document format is:
+```
+{
+    'timestamp': 1234567890.7654321, 
+    'member': {
+        'name': '...', 
+        'section': '...'
+    }, 
+    'document': {...}
+}
+```
+
+## Depot
+
+Special member that acts as data store. It listens to json documents from other members.
+
+# To see them in action
+
+- Start three separate terminals
+- Set up the environment: `. venv/bin/activate`
+- *Terminal 1:* Start the Conductor: `python conductor.py`
+  - Go to the Conductor info page: `http://127.0.0.1:1201/info/`
+- *Terminal 2:* Start the Depot: `python depot.py`
+  - Go to the Conductor info page and note the new member: `http://127.0.0.1:1201/info/`
+  - Go to the Conductor depot page and note the depot: `http://127.0.0.1:1201/members/depot/`
+- *Terminal 3:* Start the Fetcher: `python openweather-fetch.py`
+  - Go to the Conductor info page and note the third member: `http://127.0.0.1:1201/info/`
+  - Look at the Fetcher and Depot terminals and see them interact
