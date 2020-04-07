@@ -36,7 +36,7 @@ def signal_handler(sig, frame):
 # Setting self up and registering with cconductor
 sig.signal(sig.SIGINT, signal_handler)
 conductor = orch.Conductor(cfg.conductor["port"])
-member = orch.Member("Sample","MISC", find_free_port(), conductor)
+member = orch.Member("Depot","depot", find_free_port(), conductor)
 
 join_orchestra(conductor, member)
 
@@ -51,6 +51,13 @@ Member running on port {conductor.port}
 {str(member.toDict())}
 </pre>
 """
+
+
+@app.route('/store/', methods=['POST'])
+def join():
+    print("Received payload:")
+    print(request.form)
+    return "OK"
 
 
 if __name__ == '__main__':

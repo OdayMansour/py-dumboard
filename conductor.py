@@ -1,8 +1,7 @@
 import dumboard_config as cfg
 import simplejson as json
 import orchestra as orch
-from flask import Flask
-from flask import request
+from flask import Flask, request, jsonify
 
 
 app = Flask(__name__)
@@ -18,14 +17,23 @@ def welcome():
 @app.route('/info/')
 def info():
     global orchestra
-    json_members = ""
+    members = ""
     for member in orchestra.members:
-        json_members = json_members + str(member.toDict()) + "\n"
+        members = members + member.toString() + "\n"
     return f"""<pre>
 Conductor running on port {conductor.port}
-{json_members}
+{members}
 </pre>
 """
+
+
+@app.route('/members/')
+def members():
+    global orchestra
+    members = []
+    for member in orchestra.members:
+        members.append(member.toDict())
+    return jsonify(members)
 
 
 @app.route('/join/', methods=['POST'])

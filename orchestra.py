@@ -55,6 +55,9 @@ class Member:
             "port": self.port
         }
 
+    def toString(self):
+        return "Name: " + self.name + ", Section: " + self.section + ", Port: " + str(self.port)
+
 
 class BackgroundScheduler:
     def __init__(self, interval, callback):
