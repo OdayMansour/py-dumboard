@@ -56,10 +56,14 @@ Member running on port {str(conductor.port)}
 
 @app.route('/store/', methods=['POST'])
 def join():
-    print("Received payload:")
-    print(request.json)
+    print("Received payload from " + str(request.json["member"]) + ", size = " + str(request.content_length) + " bytes")
+    
+    destination = request.json["member"]["name"] + "-" + request.json["member"]["section"] + ".json"
+    print("Dumping to file " + destination)
+    with open(destination, 'w') as outfile:
+        json.dump(request.json, outfile)
+    # print(request.json)
     return "OK"
-
 
 if __name__ == '__main__':
     app.run(host="localhost", port=member.port)
