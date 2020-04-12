@@ -5,6 +5,8 @@ alias python='python3.8'
 python -m venv venv
 . venv/bin/activate
 python -m pip install Flask
+python -m pip install simplejson
+python -m pip install requests
 ```
 
 # Status
