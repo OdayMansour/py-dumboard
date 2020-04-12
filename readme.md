@@ -5,6 +5,8 @@ alias python='python3.8'
 python -m venv venv
 . venv/bin/activate
 python -m pip install Flask
+python -m pip install simplejson
+python -m pip install requests
 ```
 
 # Status
@@ -53,3 +55,10 @@ To see it in action run `python fsm.py` and see the state change.
 - *Terminal 3:* Start the Fetcher: `python openweather-fetch.py`
   - Go to the Conductor info page and note the third member: `http://127.0.0.1:1201/info/`
   - Look at the Fetcher and Depot terminals and see them interact
+
+## FSM
+
+There's a Finite State Machine now. It'll be the main event loop, handling inputs and keeping track of the board's state.
+
+To see it in action run `python fsm.py` and see the state change.
+
