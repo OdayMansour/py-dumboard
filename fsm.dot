@@ -1,0 +1,25 @@
+digraph {
+    splines=polyline
+    nodesep=1
+
+    Summary
+    Sleep
+    Selection
+    Display
+
+    Start -> Sleep
+
+    Sleep -> Summary [label="🔘"]
+    Sleep -> Selection [label="➕, ➖"]
+    Sleep -> Sleep [label="⌛"]
+
+    Summary -> Sleep [label="⌛, 🔘"]
+    Summary -> Selection [label="➕, ➖"]
+
+    Selection -> Selection [label="➕, ➖"]
+    Selection -> Display [label="🔘"]
+    Selection -> Summary [label="⌛"]
+
+    Display -> Summary [label="⌛, 🔘"]
+    Display -> Selection [label="➕, ➖"]
+}
