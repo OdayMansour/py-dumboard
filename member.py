@@ -1,3 +1,4 @@
+import sys
 import socket
 import signal as sig
 import dumboard_config as cfg
@@ -40,8 +41,13 @@ def signal_handler(sig, frame):
 
 # Setting self up and registering with cconductor
 sig.signal(sig.SIGINT, signal_handler)
+memberName = "Sample"
+memberSection = "Misc"
+if len(sys.argv) > 2:
+    memberName = sys.argv[1]
+    memberSection = sys.argv[2]
 conductor = orch.Conductor(cfg.conductor["port"], cfg.conductor["host"])
-member = orch.Member("Sample","MISC", find_free_port(), socket.gethostname(), conductor)
+member = orch.Member(memberName, memberSection, find_free_port(), socket.gethostname(), conductor)
 
 join_orchestra(conductor, member)
 
