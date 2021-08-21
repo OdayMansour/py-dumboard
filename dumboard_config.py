@@ -2,7 +2,7 @@
 
 # Conductor
 conductor = {
-    "host": "0.0.0.0",
+    "host": "luna",
     "port": 1201
 }
 

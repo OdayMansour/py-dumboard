@@ -16,12 +16,17 @@ def find_free_port():
 
 
 def join_orchestra(conductor, member):
-    url = 'http://localhost:' + str(conductor.port) + '/join/'
-    reqs.post(url, data = member.toDict())
+    url = 'http://' + conductor.host + ':' + str(conductor.port) + '/join/'
+    r = reqs.post(url, data = member.toDict())
+    if r.status_code == 200:
+        print("Successfully registered with the conductor.")
+    else:
+        print("Unsuccessfully registered with the conductor. Exiting.")
+        exit(0)
 
 
 def leave_orchestra(conductor, member):
-    url = 'http://localhost:' + str(conductor.port) + '/leave/'
+    url = 'http://' + conductor.host + ':' + str(conductor.port) + '/leave/'
     reqs.post(url, data = member.toDict())
 
 
@@ -35,8 +40,8 @@ def signal_handler(sig, frame):
 
 # Setting self up and registering with cconductor
 sig.signal(sig.SIGINT, signal_handler)
-conductor = orch.Conductor(cfg.conductor["port"])
-member = orch.Member("Sample","MISC", find_free_port(), conductor)
+conductor = orch.Conductor(cfg.conductor["port"], cfg.conductor["host"])
+member = orch.Member("Sample","MISC", find_free_port(), socket.gethostname(), conductor)
 
 join_orchestra(conductor, member)
 
@@ -54,4 +59,5 @@ Member running on port {str(conductor.port)}
 
 
 if __name__ == '__main__':
-    app.run(host="localhost", port=member.port)
+    print(member.host)
+    app.run(host=member.host, port=member.port)

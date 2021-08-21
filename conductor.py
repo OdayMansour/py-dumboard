@@ -1,12 +1,12 @@
 import dumboard_config as cfg
 import simplejson as json
 import orchestra as orch
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 
 
 app = Flask(__name__)
 orchestra = orch.Orchestra("dumboard")
-conductor = orch.Conductor(cfg.conductor["port"])
+conductor = orch.Conductor(cfg.conductor["port"], cfg.conductor["host"])
 
 
 @app.route('/')
@@ -52,17 +52,17 @@ def depot():
 @app.route('/join/', methods=['POST'])
 def join():
     global orchestra
-    member = orch.Member(request.form["name"], request.form["section"], int(request.form["port"]), conductor)
+    member = orch.Member(request.form["name"], request.form["section"], int(request.form["port"]), request.form["host"], conductor)
     if orchestra.addMember(member):
-        return "OK"
+        return Response("OK", status=200)
     else:
-        return "NOK"
+        return Response("NOK", status=409)
 
 
 @app.route('/leave/', methods=['POST'])
 def leave():
     global orchestra
-    member = orch.Member(request.form["name"], request.form["section"], int(request.form["port"]), conductor)
+    member = orch.Member(request.form["name"], request.form["section"], int(request.form["port"]), request.form["host"], conductor)
     if orchestra.removeMember(member):
         return "OK"
     else:

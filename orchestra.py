@@ -39,20 +39,23 @@ class Conductor:
     host = "0.0.0.0"
     port = -1
 
-    def __init__(self, port = -1):
+    def __init__(self, port = -1, host = "0.0.0.0"):
         self.port = port
+        self.host = host
 
 
 class Member:
     name = ""
     section = ""
+    host = "0.0.0.0"
     port = -1
     conductor = Conductor()
 
-    def __init__(self, name, section, port, conductor):
+    def __init__(self, name, section, port, host, conductor):
         self.name = name
         self.section = section
         self.port = port
+        self.host = host
         self.conductor = conductor
 
     def __eq__(self, other): 
@@ -64,11 +67,12 @@ class Member:
         return {
             "name": self.name,
             "section": self.section,
-            "port": self.port
+            "port": self.port,
+            "host": self.host
         }
 
     def toString(self):
-        return "Name: " + self.name + ", Section: " + self.section + ", Port: " + str(self.port)
+        return "Name: " + self.name + ", Section: " + self.section + ", URL: " + self.host + ":" + str(self.port)
 
 
 class BackgroundScheduler:
