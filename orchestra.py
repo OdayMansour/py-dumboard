@@ -36,6 +36,7 @@ class Orchestra:
 
 
 class Conductor:
+    host = "0.0.0.0"
     port = -1
 
     def __init__(self, port = -1):

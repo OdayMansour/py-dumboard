@@ -71,4 +71,4 @@ def leave():
 
 # Starting up server
 if __name__ == '__main__':
-    app.run(host="localhost", port=conductor.port, debug=False)
+    app.run(host=conductor.host, port=conductor.port, debug=False)
